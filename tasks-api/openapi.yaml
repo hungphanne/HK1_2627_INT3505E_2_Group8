@@ -1,0 +1,372 @@
+openapi: 3.1.0
+info:
+  title: Tasks API
+  description: |
+    API quản lý danh sách công việc (tasks) với 5 endpoint - list, get, create, patch, delete.
+
+    Nhóm 8 - INT3505E 2:
+    - 21021503 - Nguyễn Phan Hùng
+    - 24021485 - Lã Việt Hoàng
+  version: 1.0.0
+  contact:
+    name: Nhóm 8 - Nguyễn Phan Hùng (21021503), Lã Việt Hoàng (24021485)
+    email: 21021503@vnu.edu.vn
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+  - url: /
+    description: Tasks Management API
+tags:
+  - name: tasks
+    description: Quản lý công việc
+security:
+  - bearerAuth: []
+paths:
+  /tasks:
+    get:
+      tags: [tasks]
+      summary: Liệt kê tasks
+      description: Trả về danh sách tasks, hỗ trợ lọc theo trạng thái và phân trang bằng limit/offset.
+      operationId: listTasks
+      parameters:
+        - name: status
+          in: query
+          description: Lọc theo trạng thái
+          required: false
+          schema:
+            $ref: '#/components/schemas/TaskStatus'
+        - name: limit
+          in: query
+          description: Số phần tử tối đa mỗi trang
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+            examples: [20]
+        - name: offset
+          in: query
+          description: Vị trí bắt đầu
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+            examples: [0]
+      responses:
+        '200':
+          description: Danh sách tasks
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskList'
+              examples:
+                danhSach:
+                  summary: Hai tasks
+                  value:
+                    items:
+                      - id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                        title: Viết báo cáo tuần
+                        description: Tổng hợp tiến độ dự án
+                        status: todo
+                        dueDate: '2026-10-15'
+                        createdAt: '2026-10-10T00:00:00Z'
+                      - id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+                        title: Họp nhóm
+                        status: in_progress
+                        createdAt: '2026-10-10T01:00:00Z'
+                    total: 2
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+    post:
+      tags: [tasks]
+      summary: Tạo task mới
+      description: Tạo một task mới và trả về task vừa tạo kèm header Location.
+      operationId: createTask
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskCreate'
+            examples:
+              taskMoi:
+                summary: Task mới
+                value:
+                  title: Viết báo cáo tuần
+                  description: Tổng hợp tiến độ dự án
+                  status: todo
+                  dueDate: '2026-10-15'
+      responses:
+        '201':
+          description: Đã tạo
+          headers:
+            Location:
+              description: Đường dẫn của task vừa tạo
+              schema:
+                type: string
+                examples: [/tasks/3fa85f64-5717-4562-b3fc-2c963f66afa6]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+              examples:
+                daTao:
+                  summary: Task vừa tạo
+                  value:
+                    id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                    title: Viết báo cáo tuần
+                    description: Tổng hợp tiến độ dự án
+                    status: todo
+                    dueDate: '2026-10-15'
+                    createdAt: '2026-10-10T00:00:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+  /tasks/{taskId}:
+    parameters:
+      - name: taskId
+        in: path
+        required: true
+        description: ID của task
+        schema:
+          type: string
+          format: uuid
+          examples: [3fa85f64-5717-4562-b3fc-2c963f66afa6]
+    get:
+      tags: [tasks]
+      summary: Lấy chi tiết một task
+      description: Trả về task theo ID.
+      operationId: getTask
+      responses:
+        '200':
+          description: Chi tiết task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+              examples:
+                chiTiet:
+                  summary: Một task
+                  value:
+                    id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                    title: Viết báo cáo tuần
+                    status: todo
+                    createdAt: '2026-10-10T00:00:00Z'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+    patch:
+      tags: [tasks]
+      summary: Cập nhật một phần task
+      description: Chỉ cập nhật các trường được gửi lên, các trường còn lại giữ nguyên. Body phải có ít nhất một trường.
+      operationId: updateTask
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskUpdate'
+            examples:
+              doiTrangThai:
+                summary: Đánh dấu hoàn thành
+                value:
+                  status: done
+      responses:
+        '200':
+          description: Task sau khi cập nhật
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+              examples:
+                daCapNhat:
+                  summary: Task đã hoàn thành
+                  value:
+                    id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                    title: Viết báo cáo tuần
+                    status: done
+                    createdAt: '2026-10-10T00:00:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+    delete:
+      tags: [tasks]
+      summary: Xóa task
+      description: Xóa task theo ID. Trả về 204 và không có nội dung.
+      operationId: deleteTask
+      responses:
+        '204':
+          description: Đã xóa, không có nội dung trả về
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+components:
+  schemas:
+    TaskStatus:
+      type: string
+      description: Trạng thái công việc
+      enum: [todo, in_progress, done]
+      examples: [todo]
+    Task:
+      type: object
+      required: [id, title, status, createdAt]
+      properties:
+        id:
+          type: string
+          format: uuid
+          examples: [3fa85f64-5717-4562-b3fc-2c963f66afa6]
+        title:
+          type: string
+          examples: [Viết báo cáo tuần]
+        description:
+          type: string
+          examples: [Tổng hợp tiến độ dự án]
+        status:
+          $ref: '#/components/schemas/TaskStatus'
+        dueDate:
+          type: string
+          format: date
+          examples: ['2026-10-15']
+        createdAt:
+          type: string
+          format: date-time
+          examples: ['2026-10-10T00:00:00Z']
+    TaskCreate:
+      type: object
+      required: [title]
+      additionalProperties: false
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+          examples: [Viết báo cáo tuần]
+        description:
+          type: string
+          examples: [Tổng hợp tiến độ dự án]
+        status:
+          $ref: '#/components/schemas/TaskStatus'
+          default: todo
+        dueDate:
+          type: string
+          format: date
+          examples: ['2026-10-15']
+    TaskUpdate:
+      type: object
+      minProperties: 1
+      additionalProperties: false
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+        status:
+          $ref: '#/components/schemas/TaskStatus'
+        dueDate:
+          type: string
+          format: date
+    TaskList:
+      type: object
+      required: [items, total]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+        total:
+          type: integer
+          description: Tổng số tasks khớp bộ lọc (trước khi phân trang)
+          examples: [2]
+    Error:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+          examples: [NOT_FOUND]
+        message:
+          type: string
+          examples: [Task không tồn tại]
+  responses:
+    BadRequest:
+      description: Dữ liệu gửi lên không hợp lệ
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            thieuTitle:
+              summary: Thiếu title
+              value:
+                code: BAD_REQUEST
+                message: title là bắt buộc
+    Unauthorized:
+      description: Thiếu token hoặc token không hợp lệ
+      headers:
+        WWW-Authenticate:
+          description: Cách xác thực mà server yêu cầu
+          schema:
+            type: string
+            examples: [Bearer]
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            thieuToken:
+              summary: Thiếu hoặc sai token
+              value:
+                code: UNAUTHORIZED
+                message: Thiếu hoặc sai Bearer token
+    NotFound:
+      description: Không tìm thấy task
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            khongTonTai:
+              summary: ID không tồn tại
+              value:
+                code: NOT_FOUND
+                message: Task không tồn tại
+    UnexpectedError:
+      description: Lỗi không xác định
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            loiMayChu:
+              summary: Lỗi máy chủ
+              value:
+                code: INTERNAL_ERROR
+                message: Lỗi máy chủ
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Gửi header Authorization: Bearer <token>. Token demo của bài lab là demo-token.'
