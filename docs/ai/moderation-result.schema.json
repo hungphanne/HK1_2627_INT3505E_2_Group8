@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hotelgenie.local/schemas/ai/moderation-result.schema.json",
+  "title": "Kết quả kiểm duyệt review từ Gemini (DTO nội bộ AI Service)",
+  "description": "AI worker validate output của Gemini theo schema này trước khi tạo event review.moderated. Không phải event envelope.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["sentiment", "moderation_status", "reason"],
+  "properties": {
+    "sentiment": {
+      "type": "string",
+      "enum": ["positive", "neutral", "negative"]
+    },
+    "moderation_status": {
+      "type": "string",
+      "enum": ["approved", "flagged", "rejected"]
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    }
+  },
+  "examples": [
+    {
+      "sentiment": "negative",
+      "moderation_status": "approved",
+      "reason": "Đánh giá trải nghiệm tiêu cực, không có nội dung vi phạm."
+    }
+  ]
+}
