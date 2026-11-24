@@ -133,12 +133,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HotelList'
+              example:
+                data:
+                - id: 10000000-0000-4000-8000-000000000002
+                  name: HotelGenie Đà Nẵng Demo
+                  city: Đà Nẵng
+                  address: Hải Châu, Đà Nẵng, Việt Nam
+                  latitude: 16.0614
+                  longitude: 108.224
+                  description: Dữ liệu minh họa, không phải khách sạn thật
+                pagination:
+                  page: 1
+                  per_page: 20
+                  total: 1
+                  total_pages: 1
         '400':
           description: Dữ liệu không hợp lệ
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: about:blank
+                title: Bad Request
+                status: 400
+                detail: Tham số phân trang không hợp lệ
+                code: VALIDATION_ERROR
+                request_id: req-demo-400
+                errors:
+                - field: per_page
+                  message: per_page phải nằm trong khoảng từ 1 đến 100
         '422':
           description: Vi phạm ràng buộc dữ liệu
           content:
@@ -161,14 +185,16 @@ paths:
       - name: city
         in: query
         required: false
-        description: ''
+        description: Tên thành phố, không phân biệt hoa thường
+        example: Đà Nẵng
         schema:
           type: string
       - &id001
         name: check_in
         in: query
         required: false
-        description: ''
+        description: Ngày nhận phòng (YYYY-MM-DD). Đi cùng check_out để chỉ trả phòng còn trống
+        example: '2026-12-19'
         schema:
           type: string
           format: date
@@ -176,7 +202,8 @@ paths:
         name: check_out
         in: query
         required: false
-        description: ''
+        description: Ngày trả phòng (YYYY-MM-DD), phải sau check_in; khoảng ở [check_in, check_out)
+        example: '2026-12-21'
         schema:
           type: string
           format: date
@@ -184,7 +211,8 @@ paths:
         name: guests
         in: query
         required: false
-        description: ''
+        description: Số khách; chỉ trả phòng có capacity >= guests
+        example: 2
         schema:
           type: integer
           minimum: 1
@@ -192,7 +220,8 @@ paths:
         name: min_price_vnd
         in: query
         required: false
-        description: ''
+        description: Giá tối thiểu mỗi đêm (VND)
+        example: 500000
         schema:
           type: integer
           minimum: 0
@@ -200,7 +229,8 @@ paths:
         name: max_price_vnd
         in: query
         required: false
-        description: ''
+        description: Giá tối đa mỗi đêm (VND)
+        example: 1500000
         schema:
           type: integer
           minimum: 0
@@ -208,24 +238,33 @@ paths:
         name: page
         in: query
         required: false
-        description: ''
+        description: Trang cần lấy, bắt đầu từ 1
         schema:
           type: integer
           minimum: 1
+          default: 1
       - &id007
         name: per_page
         in: query
         required: false
-        description: ''
+        description: Số phần tử mỗi trang
         schema:
           type: integer
           minimum: 1
+          maximum: 100
+          default: 20
       - name: sort
         in: query
         required: false
-        description: ''
+        description: Sắp xếp theo whitelist; luôn thêm id làm tie-breaker để thứ tự ổn định
         schema:
           type: string
+          enum:
+          - name
+          - -name
+          - city
+          - -city
+          default: name
   /api/v1/hotels/{hotel_id}:
     get:
       tags:
@@ -239,6 +278,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Hotel'
+              example:
+                id: 10000000-0000-4000-8000-000000000002
+                name: HotelGenie Đà Nẵng Demo
+                city: Đà Nẵng
+                address: Hải Châu, Đà Nẵng, Việt Nam
+                latitude: 16.0614
+                longitude: 108.224
+                description: Dữ liệu minh họa, không phải khách sạn thật
         '404':
           description: Không tìm thấy
           content:
@@ -255,6 +302,7 @@ paths:
       - name: hotel_id
         in: path
         required: true
+        description: ID khách sạn
         schema:
           type: string
           format: uuid
@@ -264,6 +312,7 @@ paths:
       - Hotels
       operationId: listHotelRooms
       summary: Phòng thuộc khách sạn
+      description: Ví dụ 200 dùng bộ lọc guests=2 và max_price_vnd=1500000.
       responses:
         '200':
           description: Thành công
@@ -271,12 +320,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RoomList'
+              example:
+                data:
+                - id: 20000000-0000-4000-8000-000000000007
+                  hotel_id: 10000000-0000-4000-8000-000000000002
+                  name: Standard Double
+                  capacity: 2
+                  price_per_night_vnd: 800000
+                  active: true
+                - id: 20000000-0000-4000-8000-000000000003
+                  hotel_id: 10000000-0000-4000-8000-000000000002
+                  name: City View
+                  capacity: 2
+                  price_per_night_vnd: 1100000
+                  active: true
+                pagination:
+                  page: 1
+                  per_page: 20
+                  total: 2
+                  total_pages: 1
         '400':
           description: Dữ liệu không hợp lệ
           content:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: about:blank
+                title: Bad Request
+                status: 400
+                detail: Tham số phân trang không hợp lệ
+                code: VALIDATION_ERROR
+                request_id: req-demo-400
+                errors:
+                - field: per_page
+                  message: per_page phải nằm trong khoảng từ 1 đến 100
         '404':
           description: Không tìm thấy
           content:
@@ -299,6 +377,7 @@ paths:
       - name: hotel_id
         in: path
         required: true
+        description: ID khách sạn
         schema:
           type: string
           format: uuid
@@ -322,6 +401,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Room'
+              example:
+                id: 20000000-0000-4000-8000-000000000003
+                hotel_id: 10000000-0000-4000-8000-000000000002
+                name: City View
+                capacity: 2
+                price_per_night_vnd: 1100000
+                active: true
         '404':
           description: Không tìm thấy
           content:
@@ -338,6 +424,7 @@ paths:
       - name: room_id
         in: path
         required: true
+        description: ID phòng
         schema:
           type: string
           format: uuid
@@ -812,6 +899,20 @@ components:
           type: string
         request_id:
           type: string
+        errors:
+          type: array
+          description: Lỗi theo từng field, chỉ có ở 400/422 validation
+          items:
+            type: object
+            additionalProperties: false
+            required:
+            - field
+            - message
+            properties:
+              field:
+                type: string
+              message:
+                type: string
     RegisterRequest:
       type: object
       additionalProperties: false
