@@ -3,7 +3,7 @@
 **Mã tài liệu:** HG-AI-06  
 **Phiên bản:** 1.0 — Draft for review  
 **Ngày:** 19/11/2026  
-**Nguồn thiết kế:** Project Charter v1.2; SRS v1.1; SAD v1.0; API & Event Contracts v1.0; Data Design v1.0; slide SOA B2–B8.  
+**Nguồn thiết kế:** Project Charter v1.0; SRS v1.0; SAD v1.0; API & Event Contracts v1.0; Data Design v1.0; slide SOA B2–B8.\
 **Trạng thái:** Đủ chi tiết để dựng AI Service skeleton/mock, **chưa có triển khai hoặc kết quả đánh giá Gemini live**.
 
 > **Phân biệt nguồn:** Các slide SOA quy định/nghiên cứu REST, OpenAPI, resource, Flask, authorization, testing. Việc lựa chọn Gemini, prompt engineering, Places API, Redis Streams và các tiêu chí AI cụ thể là **thiết kế của HotelGenie**, không phải nội dung bắt buộc từ slide. Hợp đồng trong tài liệu 04 là chuẩn giao tiếp có hiệu lực cho bản này; tài liệu này không tự ý thay schema đã thống nhất.

@@ -3,7 +3,7 @@
 **Mã tài liệu:** HG-SRS-02  
 **Phiên bản:** 1.0 
 **Ngày:** 19/11/2026  
-**Tài liệu nền:** `HotelGenie_Project_Charter_Scope_VI_v1.2.md`
+**Tài liệu nền:** `01-Project-Charter-Scope.md` (v1.0)\
 **Phạm vi:** MVP học phần SOA, nhóm 5 thành viên, 4 tuần.
 
 > **Quy ước trạng thái:** **Đã chốt** = kế thừa quyết định từ Project Charter; **Đề xuất** = chi tiết hóa để nhóm duyệt; **Chưa quyết định** = chưa được tự ý coi là yêu cầu chính thức. Các tiêu chí trong tài liệu là mục tiêu nghiệm thu, **không phải kết quả đã kiểm thử**.

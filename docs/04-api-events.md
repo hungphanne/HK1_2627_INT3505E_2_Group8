@@ -1,7 +1,7 @@
 # HotelGenie — 04. API & Event Contracts
 
 **Mã:** HG-CONTRACT-04 · **Phiên bản:** v1.0 DRAFT · **Ngày:** 19/11/2026  
-**Nguồn đối chiếu:** Charter v1.2, SRS v1.1, SAD v1.0, SOA B1–B9.  
+**Nguồn đối chiếu:** Charter v1.0, SRS v1.0, SAD v1.0, SOA B1–B9.\
 **Lưu ý:** Đây là hợp đồng thiết kế **chưa có implementation hoặc test E2E**; các lựa chọn ở SAD được đánh dấu đề xuất không tự động trở thành quyết định đã duyệt.
 
 ## 1. Mục tiêu và cấu trúc deliverable
@@ -20,8 +20,8 @@ Quy ước SOA: mỗi service sở hữu một năng lực nghiệp vụ; client
 - Dùng tài nguyên danh từ số nhiều: hotels, rooms, bookings, reviews; POST auth token và AI searches là **workflow resource**; không dùng `GET /createBooking`.
 - GET chỉ đọc, POST tạo mới (201 + Location khi trả resource), PATCH hủy booking bằng trạng thái được khai báo. JWT bearer cho route riêng tư.
 - `400` malformed input / query; `401` thiếu hoặc token sai; `404` không thấy tài nguyên hoặc che giấu resource khác owner; `409` booking overlap, same idempotency key khác payload; `422` semantic validation; `503` dependency unavailable. Phải thống nhất mapper lỗi khi implement.
-- Error response (schema `Problem`) gồm `type`, `title`, `status`, `detail`, `code`, `request_id` và `instance` tùy chọn. Không đưa dữ liệu nhạy cảm vào thông báo.
-- `page`, `per_page` (offset), `sort` và các filter được mô tả trong OpenAPI. **Đề xuất khi code:** page mặc định 1, per_page mặc định 20, tối đa 100; thứ tự ổn định với ID làm tie-breaker; sort whitelist, không ghép raw SQL. **Chưa được biểu diễn hoàn toàn trong YAML** nên phải bổ sung default/max và enum trước khi đóng băng contract.
+- Error response (schema `Problem`) gồm `type`, `title`, `status`, `detail`, `code`, `request_id` và `instance` tùy chọn. Public API có thể trả `errors` trong lỗi validation 400/422, với `field` và `message` cho từng mục. Không đưa dữ liệu nhạy cảm vào thông báo.
+- Hotels/Rooms dùng phân trang offset với `page=1` và `per_page=20` mặc định, tối đa 100 phần tử mỗi trang. `GET /api/v1/hotels` nhận `sort` theo whitelist `name`, `-name`, `city`, `-city` (mặc định `name`); dùng ID để phân định đồng hạng. Với các danh sách khác, default/max và whitelist vẫn là đề xuất trước khi freeze.
 - `check_in`, `check_out` ở dạng `YYYY-MM-DD`, khoảng `[check_in, check_out)`; `check_out > check_in`. Timestamp sự kiện UTC ISO 8601.
 - ID là UUID string; tiền là **số nguyên VND**; không dùng floating-point để tính giá.
 
