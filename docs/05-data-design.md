@@ -1,7 +1,7 @@
 # HotelGenie — 05. Data Design & Resource Mapping
 
 **Mã:** HG-DATA-05 · **Phiên bản:** v1.0 (đề xuất để review) · **Ngày:** 19/11/2026  
-**Đầu vào đã đối chiếu:** Project Charter v1.2; SRS v1.1; SAD v1.0; tài liệu 04 API & Event Contracts v1.0; slide SOA B5 (*Data Modeling / Resource Design*), B7 (*Backend Service*) và liên hệ B2–B4, B6, B8, B9.  
+**Đầu vào đã đối chiếu:** Project Charter v1.0; SRS v1.0; SAD v1.0; tài liệu 04 API & Event Contracts v1.0; slide SOA B5 (*Data Modeling / Resource Design*), B7 (*Backend Service*) và liên hệ B2–B4, B6, B8, B9.\
 **Mục đích:** từ yêu cầu và hợp đồng được thống nhất đến ERD, database schema, ràng buộc và migration **đủ cụ thể để nhóm bắt đầu lập trình**, đồng thời làm rõ đâu là quyết định nhóm chưa duyệt.
 
 > **Trạng thái:** Thiết kế v1.0, chưa được nhóm chính thức phê duyệt. File SQL có thể dùng làm baseline triển khai PostgreSQL; **chưa được xác nhận chạy trên một PostgreSQL thật trong môi trường hiện tại**. Các ví dụ migration không thay thế migration Alembic mà nhóm cần quản lý trong repository.
@@ -107,7 +107,7 @@ Các trường dưới đây khớp với OpenAPI 04; trường có dấu `*` l�
 | `id` | UUID | PK |
 | `user_id`, `hotel_id` | UUID | external refs (Auth/Hotel), không FK |
 | `rating` | smallint | 1–5 |
-| `content` | text | 1–5000 ký tự sau trim |
+| `content` | text | 1–3000 ký tự sau trim (khớp `ReviewRequest.content` trong OpenAPI) |
 | `submission_version`* | int | ≥1, dùng chặn moderation kết quả cũ |
 | `moderation_status` | varchar(24) | `pending/approved/flagged/rejected` |
 | `sentiment`* | varchar(12) | positive/neutral/negative hoặc NULL |

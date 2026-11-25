@@ -100,7 +100,7 @@ CREATE TABLE review.reviews (
  user_id UUID NOT NULL,
  hotel_id UUID NOT NULL,
  rating SMALLINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
- content TEXT NOT NULL CHECK (char_length(btrim(content)) BETWEEN 1 AND 5000),
+ content TEXT NOT NULL CHECK (char_length(btrim(content)) BETWEEN 1 AND 3000),
  submission_version INT NOT NULL DEFAULT 1 CHECK (submission_version >= 1),
  moderation_status VARCHAR(24) NOT NULL DEFAULT 'pending' CHECK (moderation_status IN ('pending','approved','flagged','rejected')),
  sentiment VARCHAR(12) CHECK (sentiment IN ('positive','neutral','negative')),

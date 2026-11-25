@@ -2,7 +2,7 @@
 
 **Mã:** HG-PLAN-07 · **Phiên bản:** v1.0 DRAFT · **Ngày:** 19/11/2026  
 **Nhóm:** 5 thành viên · **Thời gian:** 4 tuần · **Mục tiêu:** triển khai prototype kiểm chứng SOA rồi mở rộng MVP.  
-**Nguồn ưu tiên:** Charter v1.2 → SRS v1.1 → SAD v1.0 → API/Event Contracts v1.0 → Data Design v1.0 → AI Specification v1.0; slide SOA B1–B9.  
+**Nguồn ưu tiên:** Charter v1.0 → SRS v1.0 → SAD v1.0 → API/Event Contracts v1.0 → Data Design v1.0 → AI Specification v1.0; slide SOA B1–B9.\
 **Tình trạng:** kế hoạch có thể triển khai sau phiên review/gate; **không khẳng định code, Docker, SQL migration hoặc test đã chạy**.
 
 > **Nguồn vs quyết định dự án:** Các slide dạy nền tảng API/REST, thiết kế resource, OpenAPI, Flask/SQLAlchemy/migration, JWT, testing, versioning. Redis Streams, Gemini, PostgreSQL exclusion constraints, Nginx gateway, outbox và cách chia việc là quyết định/đề xuất **riêng của HotelGenie**, không gán là yêu cầu trực tiếp của slide. Tài liệu 07 không tự sửa các hợp đồng 04.
@@ -23,13 +23,13 @@ https://docs.google.com/spreadsheets/d/1K13Q8LpJqMSFI1pLNOEEDfMUOyFNSKop/edit?us
 
 | Artifact | Vai trò chuẩn | Đường dẫn |
 |---|---|---|
-| Charter | Mục tiêu/phạm vi, cách làm song song | `docs/01-project-charter-and-scope.md` |
-| SRS | FR/NFR/AT, nghiệp vụ, tiêu chí nghiệm thu | `docs/02-requirements.md` |
-| SAD | Ranh giới service, tương tác, ADR | `docs/03-architecture.md` |
-| HTTP contract | **Nguồn sự thật đường dẫn, body, response, lỗi** | `docs/contracts/openapi-public.yaml`, `openapi-internal.yaml` |
+| Charter | Mục tiêu/phạm vi, cách làm song song | `docs/01-Project-Charter-Scope.md` |
+| SRS | FR/NFR/AT, nghiệp vụ, tiêu chí nghiệm thu | `docs/02-SRS.md` |
+| SAD | Ranh giới service, tương tác, ADR | `docs/03-SAD.md` |
+| HTTP contract | **Nguồn sự thật đường dẫn, body, response, lỗi** | `docs/contracts/openapi-public.yaml`, `docs/contracts/openapi-internal.yaml` |
 | Redis event contract | **Nguồn sự thật event name, envelope, payload** | `docs/contracts/events/*.schema.json` |
 | Data Design | DB schema/constraints/ownership | `docs/05-data-design.md`, `docs/data-design/` |
-| AI spec | Adapter, prompt, fallback, structured output | `docs/06-ai-specification.md`, `docs/ai/` |
+| AI spec | Adapter, prompt, fallback, structured output | `docs/06-AI-Service-Specification.md`, `docs/ai/` |
 
 **Quy tắc khi có xung đột:** không lặng lẽ chọn một đáp án. Mở issue ghi văn bản, phiên bản, trường/route xung đột, tác động; nhóm duyệt ADR/decision, cập nhật **đồng thời** tài liệu gốc + contract + code/tests, rồi mới merge. Ví dụ `review` ownership hoặc booking cancellation policy chưa chốt phải ghi rõ, không tự nới quyền.
 
@@ -87,12 +87,12 @@ HotelGenie/
 ├── workers/
 │   └── audit-consumer/            # tùy chọn demo booking event
 ├── docs/
-│   ├── 01-project-charter-and-scope.md
-│   ├── 02-requirements.md
-│   ├── 03-architecture.md
+│   ├── 01-Project-Charter-Scope.md
+│   ├── 02-SRS.md
+│   ├── 03-SAD.md
 │   ├── 04-api-events.md
 │   ├── 05-data-design.md
-│   ├── 06-ai-specification.md
+│   ├── 06-AI-Service-Specification.md
 │   ├── 07-implementation-plan.md
 │   ├── 08-development-testing.md # cập nhật khi code
 │   ├── contracts/{events,examples}/
@@ -269,7 +269,7 @@ flowchart LR
 | D-07 | Live Places provider và quota | Chưa chọn; seed fallback | **Trước demo live**; fake vẫn dev được |
 | D-08 | AI search→Hotel params/API mapping | 04 đã có filters; cần xác minh mapping đầy đủ | **Trước AI–Hotel live integration** |
 | D-09 | Review moderation trust boundary / internal auth | Worker event + owner Review update | **Trước publish/moderation integration** |
-| D-10 | Pagination defaults/max/sort whitelist | 04 mô tả đề xuất chưa đủ YAML | **Trước freeze public API** |
+| D-10 | Pagination defaults/max/sort whitelist | Đối chiếu các khai báo Hotels/Rooms trong 04 và OpenAPI trước khi freeze | **Trước freeze public API** |
 | D-11 | Migration strategy cho 5 schemas | 001_initial.sql baseline; cần Alembic ownership | **Trước merge schema-changing PR** |
 | D-12 | Booking event consumer demo | Audit worker hoặc log consumer | **Trước prototype demo**, event không được chỉ nằm trong Redis không ai đọc |
 

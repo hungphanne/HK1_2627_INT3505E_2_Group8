@@ -1,7 +1,7 @@
 # HotelGenie — Software Architecture Document (SAD)
 
 **Mã:** HG-SAD-03 · **Phiên bản:** v1.0 — Proposed / Implementation-ready draft · **Ngày:** 19/11/2026  
-**Cơ sở:** Project Charter & Scope v1.2; SRS v1.1; chín bài giảng SOA B1–B9 đính kèm.  
+**Cơ sở:** Project Charter & Scope v1.0; SRS v1.0; chín bài giảng SOA B1–B9 đính kèm.\
 **Đối tượng:** nhóm 5 thành viên, 4 tuần; mục tiêu bản mẫu dùng lại được cho MVP, không phải kiến trúc production quy mô lớn.
 
 > **Nguyên tắc sử dụng:** “Đã thống nhất” = kế thừa Charter; “Quyết định kỹ thuật đề xuất” = phương án SAD đưa ra để có thể code nhưng cần nhóm review; “Chưa chốt” = không tự ý coi là đã phê duyệt. Sơ đồ bên dưới mô tả **kiến trúc mục tiêu**, không phải thành phần đã triển khai.

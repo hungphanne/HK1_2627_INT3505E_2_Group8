@@ -137,11 +137,11 @@ Places Provider Adapter là thành phần tích hợp bên trong AI Service (kh�
 Mọi thay đổi đối với phạm vi P0 hoặc công nghệ đã chốt phải ghi lại ngày thay đổi, lý do, người phụ trách và tác động đến API contracts, dữ liệu, tiến độ và demo.
 
 ## 15. Các tài liệu tiếp theo
-1. `02-requirements.md` — Actors, use cases, yêu cầu chức năng/phi chức năng, acceptance tests.
-2. `03-architecture.md` — Sơ đồ triển khai, ownership dữ liệu, tính nhất quán booking, Redis consumers.
+1. `02-SRS.md` — Actors, use cases, yêu cầu chức năng/phi chức năng, acceptance tests.
+2. `03-SAD.md` — Sơ đồ triển khai, ownership dữ liệu, tính nhất quán booking, Redis consumers.
 3. `04-api-events.md` — REST endpoints, OpenAPI và event payloads.
 4. `05-data-design.md` — Thiết kế schema/ERD và ownership.
-5. `06-ai-specification.md` — Prompts, input/output schemas, đánh giá AI và fallback.
+5. `06-AI-Service-Specification.md` — Prompts, input/output schemas, đánh giá AI và fallback.
 6. `07-implementation-plan.md` — Tasks, người phụ trách, phụ thuộc công việc.
 7. `08-development-testing.md` — Hướng dẫn chạy local, Git conventions, kiểm thử và demo.
 
@@ -157,7 +157,7 @@ Các mục dưới đây là cam kết thiết kế và kiểm chứng dự ki�
 | **B1 — API và Web Services** | Phân biệt giao diện người dùng, API Gateway, các service nghiệp vụ; mô tả service contract và tương tác service-to-service | Sơ đồ thành phần; bảng trách nhiệm/đầu vào/đầu ra từng service; demo frontend gọi API |
 | **B2 — REST và HTTP Fundamentals** | Dùng HTTP methods phù hợp, resource URI, status code, header, JSON; API stateless | Bảng endpoint + method + status code; ví dụ `GET /api/v1/hotels`, `POST /api/v1/bookings`; Postman kiểm tra 200/201/400/401/404/409 |
 | **B3 — API Design Principles & Best Practices** | Thiết kế URL nhất quán, validate input, chuẩn hóa lỗi, xử lý idempotency/retry phù hợp, phân trang/lọc | Quy ước API chung; request/response mẫu; test trường hợp sai dữ liệu, lỗi nghiệp vụ và request lặp |
-| **B4 — API Specification và OpenAPI** | Thiết kế contract-first cho API liên service; mô tả schemas, security, error responses; cung cấp Swagger UI | File `contracts/openapi/*.yaml` theo OpenAPI 3.0; Swagger UI chạy được; lint và contract/schema test |
+| **B4 — API Specification và OpenAPI** | Thiết kế contract-first cho API liên service; mô tả schemas, security, error responses; cung cấp Swagger UI | File `docs/contracts/openapi-public.yaml`, `docs/contracts/openapi-internal.yaml` theo OpenAPI 3.0; Swagger UI chạy được; lint và contract/schema test |
 | **B5 — Data Modeling & Resource Design** | Thiết kế Hotel, Room, Booking, Review, User theo nghiệp vụ; tách API resource khỏi bảng DB; xác định service sở hữu dữ liệu | ERD; bảng ownership; SQLAlchemy models/migrations; API filtering/pagination; không truy cập trực tiếp bảng của service khác |
 | **B6 — Authentication & Authorization** | Auth Service cấp/kiểm JWT; phân quyền người dùng và quyền truy cập booking/review của chính mình | Sơ đồ login/token; test 401 khi thiếu token, 403 khi không có quyền; không lưu mật khẩu dạng rõ |
 | **B7 — Backend Service** | Flask Application Factory, Blueprints, service/repository layers, SQLAlchemy, cấu hình môi trường, logging/healthcheck, Docker | Cấu trúc repo; chạy độc lập các service bằng Docker Compose; endpoint health; test Flask client |
@@ -180,10 +180,10 @@ Các mục dưới đây là cam kết thiết kế và kiểm chứng dự ki�
 - Ghi rõ giới hạn: hệ thống demo học phần, không tuyên bố đạt chuẩn production nếu chưa có bằng chứng.
 
 ### 16.3. Hồ sơ bằng chứng và phân bổ trong tài liệu
-- 02-requirements.md: yêu cầu SOA có mã ID và tiêu chí nghiệm thu liên quan.
-- 03-architecture.md: service boundaries, deployment diagram, sequence REST/Redis, data ownership, trade-offs.
+- 02-SRS.md: yêu cầu SOA có mã ID và tiêu chí nghiệm thu liên quan.
+- 03-SAD.md: service boundaries, deployment diagram, sequence REST/Redis, data ownership, trade-offs.
 - 04-api-events.md: OpenAPI, event schemas, HTTP status, auth, versioning và quy ước lỗi.
 - 05-data-design.md: ERD, migration, resource mapping, chống booking trùng.
-- 06-ai-specification.md: AI contracts, provider adapters, đánh giá chất lượng, fallback.
+- 06-AI-Service-Specification.md: AI contracts, provider adapters, đánh giá chất lượng, fallback.
 - 07-implementation-plan.md: task SOA phân tán cho cả 5 thành viên, tích hợp từ tuần 1.
 - 08-development-testing.md: hướng dẫn tái lập demo, test results, Newman, kiểm thử contract/event và báo cáo đo đạc.
