@@ -1,0 +1,21 @@
+{
+  "description": "Dữ liệu địa điểm mẫu cho SeedPlacesProvider (06-AI-Service-Specification.md mục 5). Dùng khi provider live lỗi, timeout, hết quota, và cho test/demo ổn định. Toạ độ gần đúng, chỉ phục vụ demo. Response trả source='seed', is_fallback=true.",
+  "version": 1,
+  "categories": ["food", "transport", "entertainment"],
+  "places": [
+    {"provider_id": "seed-hn-001", "city": "Hà Nội", "name": "Hồ Hoàn Kiếm", "category": "entertainment", "latitude": 21.028700, "longitude": 105.852400, "address": "Hoàn Kiếm, Hà Nội"},
+    {"provider_id": "seed-hn-002", "city": "Hà Nội", "name": "Nhà hát Lớn Hà Nội", "category": "entertainment", "latitude": 21.024500, "longitude": 105.857600, "address": "1 Tràng Tiền, Hoàn Kiếm, Hà Nội"},
+    {"provider_id": "seed-hn-003", "city": "Hà Nội", "name": "Văn Miếu – Quốc Tử Giám", "category": "entertainment", "latitude": 21.027700, "longitude": 105.835500, "address": "58 Quốc Tử Giám, Đống Đa, Hà Nội"},
+    {"provider_id": "seed-hn-004", "city": "Hà Nội", "name": "Phố Tạ Hiện", "category": "food", "latitude": 21.035200, "longitude": 105.851800, "address": "Tạ Hiện, Hoàn Kiếm, Hà Nội"},
+    {"provider_id": "seed-hn-005", "city": "Hà Nội", "name": "Chợ Đồng Xuân", "category": "food", "latitude": 21.038100, "longitude": 105.849400, "address": "Đồng Xuân, Hoàn Kiếm, Hà Nội"},
+    {"provider_id": "seed-hn-006", "city": "Hà Nội", "name": "Ga Hà Nội", "category": "transport", "latitude": 21.024500, "longitude": 105.841200, "address": "120 Lê Duẩn, Đống Đa, Hà Nội"},
+    {"provider_id": "seed-hn-007", "city": "Hà Nội", "name": "Sân bay quốc tế Nội Bài", "category": "transport", "latitude": 21.218700, "longitude": 105.804200, "address": "Sóc Sơn, Hà Nội"},
+    {"provider_id": "seed-dn-001", "city": "Đà Nẵng", "name": "Cầu Rồng", "category": "entertainment", "latitude": 16.061300, "longitude": 108.227200, "address": "Nguyễn Văn Linh, Đà Nẵng"},
+    {"provider_id": "seed-dn-002", "city": "Đà Nẵng", "name": "Bảo tàng Điêu khắc Chăm", "category": "entertainment", "latitude": 16.060400, "longitude": 108.223600, "address": "02 đường 2 Tháng 9, Hải Châu, Đà Nẵng"},
+    {"provider_id": "seed-dn-003", "city": "Đà Nẵng", "name": "Bãi biển Mỹ Khê", "category": "entertainment", "latitude": 16.054400, "longitude": 108.247000, "address": "Võ Nguyên Giáp, Sơn Trà, Đà Nẵng"},
+    {"provider_id": "seed-dn-004", "city": "Đà Nẵng", "name": "Chợ Hàn", "category": "food", "latitude": 16.067900, "longitude": 108.224200, "address": "119 Trần Phú, Hải Châu, Đà Nẵng"},
+    {"provider_id": "seed-dn-005", "city": "Đà Nẵng", "name": "Chợ Cồn", "category": "food", "latitude": 16.068100, "longitude": 108.213900, "address": "290 Hùng Vương, Hải Châu, Đà Nẵng"},
+    {"provider_id": "seed-dn-006", "city": "Đà Nẵng", "name": "Ga Đà Nẵng", "category": "transport", "latitude": 16.071700, "longitude": 108.209400, "address": "791 Hải Phòng, Thanh Khê, Đà Nẵng"},
+    {"provider_id": "seed-dn-007", "city": "Đà Nẵng", "name": "Sân bay quốc tế Đà Nẵng", "category": "transport", "latitude": 16.043900, "longitude": 108.199400, "address": "Hải Châu, Đà Nẵng"}
+  ]
+}
