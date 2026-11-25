@@ -6,6 +6,8 @@ info:
 servers:
 - url: http://localhost:8080
   description: Gateway demo (đề xuất; kiểm chứng khi Compose có thật)
+- url: http://127.0.0.1:4010
+  description: Prism mock server – demo tuần 12 (docs/08-development-testing.md)
 tags:
 - name: Auth
 - name: Hotels
