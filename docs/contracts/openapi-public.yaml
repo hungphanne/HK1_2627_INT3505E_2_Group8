@@ -751,6 +751,49 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AISearchResponse'
+              examples:
+                du_thong_tin:
+                  summary: Đủ thành phố, ngày, số khách – trả phòng thật từ Hotel Service
+                  value:
+                    filters:
+                      city: Đà Nẵng
+                      check_in: '2026-12-19'
+                      check_out: '2026-12-21'
+                      guests: 2
+                      min_price_vnd: null
+                      max_price_vnd: 1200000
+                    rooms:
+                    - id: 20000000-0000-4000-8000-000000000007
+                      hotel_id: 10000000-0000-4000-8000-000000000002
+                      name: Standard Double
+                      capacity: 2
+                      price_per_night_vnd: 800000
+                      active: true
+                    - id: 20000000-0000-4000-8000-000000000003
+                      hotel_id: 10000000-0000-4000-8000-000000000002
+                      name: City View
+                      capacity: 2
+                      price_per_night_vnd: 1100000
+                      active: true
+                    needs_clarification: false
+                    clarification_fields: []
+                    availability_verified: true
+                can_lam_ro:
+                  summary: Thiếu ngày – không trả phòng, yêu cầu bổ sung
+                  value:
+                    filters:
+                      city: Hà Nội
+                      check_in: null
+                      check_out: null
+                      guests: 2
+                      min_price_vnd: null
+                      max_price_vnd: 1500000
+                    rooms: []
+                    needs_clarification: true
+                    clarification_fields:
+                    - check_in
+                    - check_out
+                    availability_verified: false
         '400':
           description: Dữ liệu không hợp lệ
           content:
@@ -763,6 +806,25 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+        '429':
+          description: Vượt giới hạn gọi AI (bảo vệ quota Gemini)
+          headers:
+            Retry-After:
+              description: Số giây nên chờ trước khi gọi lại
+              schema:
+                type: integer
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+              example:
+                type: https://hotelgenie.local/problems/ai-rate-limited
+                title: Too Many Requests
+                status: 429
+                detail: Bạn đã gửi quá nhiều yêu cầu tìm kiếm AI, thử lại sau.
+                instance: /api/v1/ai/searches
+                code: AI_RATE_LIMITED
+                request_id: req-ai-0002
         '502':
           description: Lỗi nhà cung cấp
           content:
@@ -775,6 +837,14 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+              example:
+                type: https://hotelgenie.local/problems/ai-provider-unavailable
+                title: Service Unavailable
+                status: 503
+                detail: Dịch vụ AI tạm thời không phản hồi; hãy dùng bộ lọc tìm phòng thông thường.
+                instance: /api/v1/ai/searches
+                code: AI_PROVIDER_UNAVAILABLE
+                request_id: req-ai-0003
         '504':
           description: Hết thời gian chờ
           content:
@@ -793,6 +863,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AISearchRequest'
+            example:
+              prompt: Phòng ở Đà Nẵng cho 2 người từ 19/12 đến 21/12, dưới 1,2 triệu
   /api/v1/hotels/{hotel_id}/nearby-places:
     get:
       tags:
@@ -1275,6 +1347,7 @@ components:
       - rooms
       - needs_clarification
       - clarification_fields
+      - availability_verified
       properties:
         filters:
           $ref: '#/components/schemas/SearchFilters'
@@ -1284,6 +1357,9 @@ components:
             $ref: '#/components/schemas/Room'
         needs_clarification:
           type: boolean
+        availability_verified:
+          type: boolean
+          description: true khi đã có check_in/check_out và phòng trả về đã được Booking Service xác nhận còn trống
         clarification_fields:
           type: array
           items:
