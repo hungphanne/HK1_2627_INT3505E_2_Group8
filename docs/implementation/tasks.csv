@@ -3,11 +3,11 @@ IMP-01,"Repo scaffold, env, CI",TV1,,W1,P0,Repo clone; CI checks execute,Not sta
 IMP-02,"Docker Compose, Gateway, health",TV1,IMP-01,W1,P0,Compose health reachable,Not started
 IMP-03,"Contract CI, Spectral, schema lint",TV3,IMP-01,W1,P0,OpenAPI/event validators run,Not started
 IMP-04,Auth register/token/me,TV2,IMP-01;IMP-03,W1-W2,P0,JWT and 401 tests,Not started
-IMP-05,"Hotel seed, catalog, filters",TV3,IMP-01;IMP-03,W1-W2,GET endpoints contract tests,Not started
-IMP-06,"Booking DB, exclusion, idempotency",TV4,IMP-01;IMP-03,W1-W2,DB concurrency/replay tests,Not started
+IMP-05,"Hotel seed, catalog, filters",TV3,IMP-01;IMP-03,W1-W2,P0,GET endpoints contract tests,Not started
+IMP-06,"Booking DB, exclusion, idempotency",TV4,IMP-01;IMP-03,W1-W2,P0,DB concurrency/replay tests,Not started
 IMP-07,Internal snapshot and availability,TV3+TV4,IMP-05;IMP-06,W2,P0,2 internal ops tests,Not started
-IMP-08,"Booking public CRUD, outbox",TV4,IMP-04;IMP-06;IMP-07,W2,201/409/cancel and events,Not started
-IMP-09,React auth/search/booking UI,TV1,IMP-03,W1-W2,UI mock then live,Not started
+IMP-08,"Booking public CRUD, outbox",TV4,IMP-04;IMP-06;IMP-07,W2,P0,201/409/cancel and events,Not started
+IMP-09,React auth/search/booking UI,TV1,IMP-03,W1-W2,P0,UI mock then live,Not started
 IMP-10,Booking event consumer and smoke,TV1+TV4,IMP-02;IMP-08;IMP-09,W2,P0,Redis audit and race evidence,Not started
 IMP-11,Review API and pending/outbox,TV2,IMP-04;IMP-03,W3,P0,Pending not public,Not started
 IMP-12,AI search with Gemini adapter/fake,TV5,IMP-03;IMP-05,W3,P0,filters and Hotel source truth,Not started

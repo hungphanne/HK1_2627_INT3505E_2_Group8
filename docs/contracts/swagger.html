@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <title>HotelGenie API – Swagger UI</title>
+  <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5/swagger-ui.css">
+</head>
+<body>
+  <div id="swagger-ui"></div>
+  <script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
+  <script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-standalone-preset.js"></script>
+  <script>
+    // Chạy trong thư mục docs/contracts:  python -m http.server 8000
+    // rồi mở http://localhost:8000/swagger.html
+    window.ui = SwaggerUIBundle({
+      urls: [
+        { url: './openapi-public.yaml', name: 'Public API (qua Gateway)' },
+        { url: './openapi-internal.yaml', name: 'Internal API (service-to-service)' }
+      ],
+      'urls.primaryName': 'Public API (qua Gateway)',
+      dom_id: '#swagger-ui',
+      deepLinking: true,
+      presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
+      layout: 'StandaloneLayout'
+    });
+  </script>
+</body>
+</html>
