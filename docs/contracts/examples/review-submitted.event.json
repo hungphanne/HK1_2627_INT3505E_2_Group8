@@ -1,0 +1,16 @@
+{
+  "event_id": "22222222-2222-4222-8222-222222222222",
+  "event_type": "review.submitted",
+  "event_version": 1,
+  "occurred_at": "2026-11-19T03:00:00Z",
+  "correlation_id": "demo-request-01",
+  "producer": "review-service",
+  "payload": {
+    "review_id": "11111111-1111-4111-8111-111111111111",
+    "hotel_id": "33333333-3333-4333-8333-333333333333",
+    "user_id": "22222222-2222-4222-8222-222222222222",
+    "content": "Khách sạn sạch, nhân viên nhiệt tình.",
+    "rating": 5,
+    "submission_version": 1
+  }
+}
